@@ -4,23 +4,23 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { useGlobalContext } from "@/app/context/globalContext";
 
-function FlyToActiveCity({ activeCityCords }) {
+function FlyToActiveCity({ activeCityCoords }) {
   const map = useMap();
 
   useEffect(() => {
-    if (activeCityCords) {
+    if (activeCityCoords) {
       const zoomLev = 13;
       const flyToOptions = {
         duration: 1.5,
       };
 
       map.flyTo(
-        [activeCityCords.lat, activeCityCords.lon],
+        [activeCityCoords.lat, activeCityCoords.lon],
         zoomLev,
         flyToOptions
       );
     }
-  }, [activeCityCords, map]);
+  }, [activeCityCoords, map]);
 
   return null;
 }
@@ -28,9 +28,9 @@ function FlyToActiveCity({ activeCityCords }) {
 function Mapbox() {
   const { forecast } = useGlobalContext(); // Your coordinates
 
-  const activeCityCords = forecast?.coord;
+  const activeCityCoords = forecast?.coord;
 
-  if (!forecast || !forecast.coord || !activeCityCords) {
+  if (!forecast || !forecast.coord || !activeCityCoords) {
     return (
       <div>
         <h1>Loading</h1>
@@ -41,7 +41,7 @@ function Mapbox() {
   return (
     <div className="flex-1 basis-[50%] border rounded-lg">
       <MapContainer
-        center={[activeCityCords.lat, activeCityCords.lon]}
+        center={[activeCityCoords.lat, activeCityCoords.lon]}
         zoom={13}
         scrollWheelZoom={false}
         className="rounded-lg m-4"
@@ -52,7 +52,7 @@ function Mapbox() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
 
-        <FlyToActiveCity activeCityCords={activeCityCords} />
+        <FlyToActiveCity activeCityCoords={activeCityCoords} />
       </MapContainer>
     </div>
   );
